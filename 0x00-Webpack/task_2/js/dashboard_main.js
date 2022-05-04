@@ -1,20 +1,25 @@
 import '../css/main.css';
-const $ = require('jquery');
-const _ = require('lodash');
+import $ from 'jquery';
+import _ from 'lodash';
 
-$('body').append('<p>Holberton Dashboard</p>');
-$('body').append('<p>Dashboard data for the students</p>');
-$('body').append('<button>Click here to get started</button>');
-$('body').append("<p id='count'></p>");
-$('body').append('<p>Copyright - Holberton School</p>');
+let count = 0;
 
-const updateCounter = () => {
-	let times = $('#count').html() || 0;
-	$('button').on('click', () => {
-		times++;
-		$('#count').html(`${times} clicks on the button`);
+function updateCounter() {
+	count += 1;
+	return count;
+}
+
+$(function() {
+	$('body').append("<div id='logo'></div>");
+	$('body').append('<p>Holberton Dashboard</p>');
+	$('body').append('<p>Dashboard data for the students</p>');
+	$('body').append('<button><span>Click here to get started<span></button>');
+	$('body').append("<p id='count'></p>");
+	$('body').append('<p>Copyright - Holberton School</p>');
+
+	let debouncedFunc = _.debounce(() => {
+		let count = updateCounter();
+		$('#count').text(`${count} clicks on the button`);
 	});
-};
-
-_.debounce(updateCounter, 500);
-updateCounter();
+	$('button').on('click', debouncedFunc);
+});
